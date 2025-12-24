@@ -35,47 +35,56 @@ export default function FruitPage() {
     setFruits(getFruits());
   }, []);
 
-  //Filter
+  // Filter
   const filteredFruits = fruits.filter((f) =>
     `${f.nama} ${f.kategori} ${f.kualitas}`
       .toLowerCase()
       .includes(search.toLowerCase())
   );
 
-  //ADD
+  // Parameter harga
   const addFruit = (data) => {
+    
     const updated = [...fruits, data];
     setFruits(updated);
     saveFruits(updated);
-    addHistory("ADD", data.nama);
+    
+    // data harga
+    addHistory("ADD", data.nama, data.harga, 1);
+    
     setHistoryTrigger((v) => v + 1);
-
     setSearch("");
     setOpen(false);
   };
 
-  // Edit
+  // Parameter harga
   const editFruit = (data) => {
+    
     const updated = fruits.map((f, i) => (i === editIndex ? data : f));
     setFruits(updated);
     saveFruits(updated);
-    addHistory("EDIT", data.nama);
+    
+    // data harga
+    addHistory("EDIT", data.nama, data.harga, 1);
+    
     setHistoryTrigger((v) => v + 1);
-
     setSearch("");
     setEditIndex(null);
     setOpen(false);
   };
 
-  // Delete
+  // Parameter harga
   const confirmDelete = () => {
     const target = fruits[deleteIndex];
+    
     const updated = fruits.filter((_, i) => i !== deleteIndex);
     setFruits(updated);
     saveFruits(updated);
-    addHistory("DELETE", target.nama);
+    
+    // target harga
+    addHistory("DELETE", target.nama, target.harga, 1);
+    
     setHistoryTrigger((v) => v + 1);
-
     setSearch("");
     setDeleteIndex(null);
   };
@@ -92,7 +101,7 @@ export default function FruitPage() {
   return (
     <div className="min-h-screen bg-gray-100 px-3 py-4 sm:p-6 md:p-8">
       <div className="max-w-5xl mx-auto bg-white p-4 sm:p-6 rounded-xl shadow">
-        {/* Header  */}
+        {/* Header */}
         <div className="flex flex-col gap-4 mb-4">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
             <h1 className="text-lg sm:text-xl font-semibold">List Buah</h1>
@@ -110,7 +119,7 @@ export default function FruitPage() {
                   setEditIndex(null);
                   setOpen(true);
                 }}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg cursor-cell"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg cursor-cell hover:bg-blue-700 transition"
               >
                 Tambah Buah
               </button>
@@ -148,6 +157,18 @@ export default function FruitPage() {
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
+
+        {/* Summary Info */}
+        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-sm font-medium text-gray-700">Total Data: {filteredFruits.length} buah</p>
+            </div>
+            <div className="text-xs text-gray-500">
+              Harga akan tercatat di riwayat
+            </div>
+          </div>
+        </div>
 
         <p className="mt-3 text-xs text-gray-500 italic">
           Desktop: klik kanan / touchpad dua jari

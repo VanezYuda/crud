@@ -1,6 +1,9 @@
 import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
 
 export default function HistoryItem({ item }) {
+
+  if (!item) return null;
+
   const config = {
     ADD: {
       color: "bg-green-100 text-green-700",
@@ -16,7 +19,9 @@ export default function HistoryItem({ item }) {
     },
   };
 
-  const { color, icon } = config[item.action] || {};
+  const action = item.action || "ADD";
+  const { color, icon } = config[action] || config.ADD;
+  const price = Number(item.price) || 0;
 
   return (
     <div className="flex justify-between items-center py-2 px-2 rounded-md hover:bg-gray-50 transition text-sm">
@@ -25,14 +30,20 @@ export default function HistoryItem({ item }) {
           className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${color}`}
         >
           {icon}
-          {item.action}
+          {action}
         </span>
-        <span className="text-gray-700">{item.name}</span>
+        <span className="text-gray-700">{item.name || "Unknown Item"}</span>
       </div>
 
-      <span className="text-gray-400 text-xs whitespace-nowrap">
-        {item.time}
-      </span>
+      <div className="flex flex-col items-end">
+        {/* HARGA HARUS MUNCUL DI SINI */}
+        <span className="text-gray-700 font-medium">
+          Rp {price.toLocaleString()}
+        </span>
+        <span className="text-gray-400 text-xs whitespace-nowrap">
+          {item.time || ""}
+        </span>
+      </div>
     </div>
   );
 }
