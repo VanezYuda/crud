@@ -1,9 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fruitSchema } from "../../schemas/fruitSchema";
 
 export default function FruitForm({ onSubmit, defaultValues }) {
+  // Mode edit ditentukan dari defaultValues
+  const isEdit = useMemo(() => {
+    return defaultValues && Object.keys(defaultValues).length > 0;
+  }, [defaultValues]);
+
   const {
     register,
     handleSubmit,
@@ -22,7 +27,7 @@ export default function FruitForm({ onSubmit, defaultValues }) {
     },
   });
 
-  // Reset form saat mode edit / tambah berubah
+  // Reset form ketika mode berubah (tambah ↔ edit)
   useEffect(() => {
     reset({
       nama: "",
@@ -40,7 +45,7 @@ export default function FruitForm({ onSubmit, defaultValues }) {
       {/* Header */}
       <div>
         <h2 className="text-base sm:text-lg font-semibold text-gray-800">
-          Form Data Buah
+          {isEdit ? "Edit Data Buah" : "Tambah Data Buah"}
         </h2>
         <p className="text-xs sm:text-sm text-gray-500">
           Lengkapi data buah dengan benar
@@ -56,18 +61,20 @@ export default function FruitForm({ onSubmit, defaultValues }) {
           {...register("nama")}
           placeholder="Contoh: Apel Fuji"
           className={`w-full rounded-xl border px-4 py-2 text-sm outline-none transition
-        ${
-          errors.nama
-            ? "border-red-500 focus:ring-red-200"
-            : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
-        }`}
+            ${
+              errors.nama
+                ? "border-red-500 focus:ring-red-200"
+                : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+            }`}
         />
         {errors.nama && (
-          <p className="text-xs text-red-500 mt-1">{errors.nama.message}</p>
+          <p className="text-xs text-red-500 mt-1">
+            {errors.nama.message}
+          </p>
         )}
       </div>
 
-      {/* harga & stok */}
+      {/* Harga & Stok */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -78,14 +85,16 @@ export default function FruitForm({ onSubmit, defaultValues }) {
             {...register("harga", { valueAsNumber: true })}
             placeholder="Contoh: 15000"
             className={`w-full rounded-xl border px-4 py-2 text-sm outline-none transition
-          ${
-            errors.harga
-              ? "border-red-500 focus:ring-red-200"
-              : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
-          }`}
+              ${
+                errors.harga
+                  ? "border-red-500 focus:ring-red-200"
+                  : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+              }`}
           />
           {errors.harga && (
-            <p className="text-xs text-red-500 mt-1">{errors.harga.message}</p>
+            <p className="text-xs text-red-500 mt-1">
+              {errors.harga.message}
+            </p>
           )}
         </div>
 
@@ -98,14 +107,16 @@ export default function FruitForm({ onSubmit, defaultValues }) {
             {...register("stok", { valueAsNumber: true })}
             placeholder="Jumlah stok"
             className={`w-full rounded-xl border px-4 py-2 text-sm outline-none transition
-          ${
-            errors.stok
-              ? "border-red-500 focus:ring-red-200"
-              : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
-          }`}
+              ${
+                errors.stok
+                  ? "border-red-500 focus:ring-red-200"
+                  : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+              }`}
           />
           {errors.stok && (
-            <p className="text-xs text-red-500 mt-1">{errors.stok.message}</p>
+            <p className="text-xs text-red-500 mt-1">
+              {errors.stok.message}
+            </p>
           )}
         </div>
       </div>
@@ -118,11 +129,11 @@ export default function FruitForm({ onSubmit, defaultValues }) {
         <select
           {...register("kategori")}
           className={`w-full rounded-xl border px-4 py-2 text-sm bg-white outline-none transition
-        ${
-          errors.kategori
-            ? "border-red-500"
-            : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
-        }`}
+            ${
+              errors.kategori
+                ? "border-red-500"
+                : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+            }`}
         >
           <option value="">Pilih Kategori</option>
           <option value="Lokal">Lokal</option>
@@ -130,7 +141,7 @@ export default function FruitForm({ onSubmit, defaultValues }) {
         </select>
       </div>
 
-      {/* kualitas */}
+      {/* Kualitas */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Kualitas
@@ -138,11 +149,11 @@ export default function FruitForm({ onSubmit, defaultValues }) {
         <select
           {...register("kualitas")}
           className={`w-full rounded-xl border px-4 py-2 text-sm bg-white outline-none transition
-        ${
-          errors.kualitas
-            ? "border-red-500"
-            : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
-        }`}
+            ${
+              errors.kualitas
+                ? "border-red-500"
+                : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+            }`}
         >
           <option value="">Pilih Kualitas</option>
           <option value="A">A (Premium)</option>
@@ -151,7 +162,7 @@ export default function FruitForm({ onSubmit, defaultValues }) {
         </select>
       </div>
 
-      {/* tanggal */}
+      {/* Tanggal */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Tanggal Masuk
@@ -160,27 +171,35 @@ export default function FruitForm({ onSubmit, defaultValues }) {
           type="date"
           {...register("tanggalMasuk")}
           className={`w-full rounded-xl border px-4 py-2 text-sm outline-none transition
-        ${
-          errors.tanggalMasuk
-            ? "border-red-500"
-            : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
-        }`}
+            ${
+              errors.tanggalMasuk
+                ? "border-red-500"
+                : "border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-100"
+            }`}
         />
       </div>
 
-      {/* tombol */}
+      {/* Tombol Submit */}
       <button
         type="submit"
         disabled={isSubmitting}
         className={`w-full rounded-xl py-2.5 text-sm sm:text-base text-white font-medium transition
-      ${
-        isSubmitting
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-blue-600 hover:bg-blue-700 active:scale-[0.98]"
-      }
-      shadow-lg`}
+          ${
+            isSubmitting
+              ? "bg-gray-400 cursor-not-allowed"
+              : isEdit
+              ? "bg-green-600 hover:bg-green-700"
+              : "bg-blue-600 hover:bg-blue-700"
+          }
+          active:scale-[0.98] shadow-lg`}
       >
-        {isSubmitting ? "Menyimpan..." : "Simpan Data"}
+        {isSubmitting
+          ? isEdit
+            ? "Mengupdate..."
+            : "Menyimpan..."
+          : isEdit
+          ? "Update Data"
+          : "Simpan Data"}
       </button>
     </form>
   );

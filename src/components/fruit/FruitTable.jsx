@@ -1,9 +1,4 @@
-export default function FruitTable({
-  fruits,
-  onRightClick,
-  onEdit,
-  onDelete,
-}) {
+export default function FruitTable({ fruits, onRightClick, onEdit, onDelete }) {
   //  empety state
   if (!fruits || fruits.length === 0) {
     return (
@@ -91,9 +86,7 @@ export default function FruitTable({
                   </span>
                 </td>
 
-                <td className="px-6 py-4 text-gray-500">
-                  {f.tanggalMasuk}
-                </td>
+                <td className="px-6 py-4 text-gray-500">{f.tanggalMasuk}</td>
               </tr>
             ))}
           </tbody>
@@ -103,15 +96,10 @@ export default function FruitTable({
       {/* mobile: 1 kolom | tablet: 2 kolom */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
         {fruits.map((f, i) => (
-          <div
-            key={i}
-            className="rounded-xl border bg-white p-4 shadow-sm"
-          >
+          <div key={i} className="rounded-xl border bg-white p-4 shadow-sm">
             {/* Header */}
             <div className="flex justify-between items-start mb-2">
-              <h3 className="font-semibold text-gray-900">
-                {f.nama}
-              </h3>
+              <h3 className="font-semibold text-gray-900">{f.nama}</h3>
 
               <span
                 className={`rounded-full px-3 py-1 text-xs font-semibold
@@ -130,8 +118,8 @@ export default function FruitTable({
             {/* content */}
             <div className="text-sm text-gray-600 space-y-1">
               <p>
-                <span className="font-medium">Harga:</span>{" "}
-                Rp {Number(f.harga).toLocaleString("id-ID")}
+                <span className="font-medium">Harga:</span> Rp{" "}
+                {Number(f.harga).toLocaleString("id-ID")}
               </p>
 
               <p>
@@ -149,13 +137,11 @@ export default function FruitTable({
               </p>
 
               <p>
-                <span className="font-medium">Kategori:</span>{" "}
-                {f.kategori}
+                <span className="font-medium">Kategori:</span> {f.kategori}
               </p>
 
               <p>
-                <span className="font-medium">Tanggal:</span>{" "}
-                {f.tanggalMasuk}
+                <span className="font-medium">Tanggal:</span> {f.tanggalMasuk}
               </p>
             </div>
 
